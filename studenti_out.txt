@@ -1,0 +1,5 @@
+112,Oprea,Maria,TI21/1
+112,Popa,Ioan,TI21/1
+120,Popa,Alis,TI21/2
+122,Uritescu,Eugen,TI22/2
+122,Vecerdea,Mihai,TI22/1
