@@ -3,10 +3,7 @@ package ro.ulbs.proiectaresoftware.students;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Application {
     public static boolean existaStudent(List<Student> lista, Student student) {
@@ -18,6 +15,22 @@ public class Application {
             }
         }
         return false;
+    }
+
+    //Tema lab 4
+    public static double gasesteNota(String prenume,String nume,HashMap<Integer, Student>map)
+    {
+        HashMap<String,Student> prenumeNume=new HashMap<>();
+        for(Student s:map.values()){
+            String cheie=s.getPrenume()+"-"+s.getNume();
+            prenumeNume.put(cheie,s);
+        }
+        String caut=prenume+"-"+nume;
+        Student studentGasit=prenumeNume.get(caut);
+        if(studentGasit!=null){
+            return studentGasit.getNota();
+        }
+        return 0.0;
     }
     public static void main(String[] args) {
         //Lab1
@@ -106,6 +119,49 @@ public class Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Lab4
+        HashMap<Integer, Student>studentiMap=new HashMap<>();
+        try{
+            List<String>linii=Files.readAllLines(Paths.get("studenti_in.txt"));
+            for(String linie:linii)
+            {
+                String[] parts=linie.split(",");
+                int numarMatricol=Integer.parseInt(parts[0]);
+                String prenume=parts[1];
+                String nume=parts[2];
+                String formatieDeStudiu=parts[3];
+                Student s=new Student(numarMatricol, prenume, nume, formatieDeStudiu);
+                studentiMap.put(numarMatricol, s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try{
+            List<String> linii=Files.readAllLines(Paths.get("note_anon.txt"));
+            for(String linie:linii){
+                String[] parts=linie.split(",");
+                int numarMatricol=Integer.parseInt(parts[0]);
+                double nota=Double.parseDouble(parts[1]);
+                Student s=studentiMap.get(numarMatricol);//O(1)
+                if(s!=null){
+                    s.setNota(nota);
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Studneti cu note: ");
+        for(Map.Entry<Integer, Student> entry:studentiMap.entrySet()){
+            System.out.println(entry.getValue());
+        }
+
+        //Tema Lab 4
+        double notaM = gasesteNota("Bianca", "Popescu", studentiMap);
+        double notaN = gasesteNota("Ioan", "Mihalcea", studentiMap);
+        System.out.println("Nota Bianca Popescu: " + notaM);
+        System.out.println("Nota Ioan Mihalcea: " + notaN);
     }
 
 }
