@@ -32,6 +32,18 @@ public class Application {
         }
         return 0.0;
     }
+    public static void salveazaInFisier(String numeFisier, List<? extends Student> colectie) {
+        try {
+            List<String> linii = new ArrayList<>();
+            for (Student s : colectie) {
+                linii.add(s.toString());
+            }
+            Files.write(Paths.get(numeFisier), linii);
+            System.out.println("Salvat in: " + "bursieri_out.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
         //Lab1
         Student s1 = new Student(112, "Ioan", "Popa", "TI21/1");
@@ -162,6 +174,20 @@ public class Application {
         double notaN = gasesteNota("Ioan", "Mihalcea", studentiMap);
         System.out.println("Nota Bianca Popescu: " + notaM);
         System.out.println("Nota Ioan Mihalcea: " + notaN);
+
+        //Lab5
+        List<StudentiBursieri> bursieri = new ArrayList<>();
+        bursieri.add(new StudentiBursieri(1025, "Andrei", "Popa", "ISM141/2", 8.70, 725.50));
+        bursieri.add(new StudentiBursieri(1024, "Ioan", "Mihalcea", "ISM141/1", 9.80, 801.10));
+        bursieri.add(new StudentiBursieri(1026, "Anamaria", "Prodan", "TI131/1", 8.90, 745.50));
+        bursieri.add(new StudentiBursieri(1029, "Bianca", "Popescu", "TI131/1", 9.10, 780.80));
+
+        salveazaInFisier("bursieri_out.txt", bursieri);
+        System.out.println("Bursieri:");
+        for (StudentiBursieri sb : bursieri) {
+            System.out.println(sb);
+        }
+
     }
 
 }
