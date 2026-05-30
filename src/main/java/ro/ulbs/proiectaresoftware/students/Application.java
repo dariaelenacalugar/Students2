@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Application {
     public static boolean existaStudent(List<Student> lista, Student student) {
@@ -187,7 +188,48 @@ public class Application {
         for (StudentiBursieri sb : bursieri) {
             System.out.println(sb);
         }
+        //Lab7
 
+
+
+        //Lab9
+        List<Student> studentiCuNote = Arrays.asList(
+                new Student(1025,"Andrei","Popa","ISM141/2", 8.70),
+                new Student(1024,"Ioan","Mihalcea","ISM141/1", 10),
+                new Student(1026,"Anamaria","Prodan","TI131/1", 8.90),
+                new Student(1029,"Bianca","Popescu","TI131/1,", 10),
+                new Student(1029,"Maria","Pana","TI131/2,", 4.10),
+                new Student(1029,"Gabriela","Mohanu","TI131/2,", 7.33),
+                new Student(1029,"Marius","Nasta","TI131/2,", 3.20),
+                new Student(1029,"Marius","Nasta","TI131/1,", 5.12),
+                new Student(1029,"Andrei","Dobrescu","TI131/2,", 2.22)
+        );
+        //9.3.3-a)
+        System.out.println("a)Nota 10:");
+        studentiCuNote.stream()
+                .filter(s -> s.getNota() == 10)
+                .forEach(System.out::println);
+        //9.3.3-b)
+        System.out.println("b)Nota sub 5:");
+        studentiCuNote.stream()
+                .filter(s -> s.getNota() < 5)
+                .forEach(System.out::println);
+        //9.3.3-c)
+        List<Student> noteModificate = studentiCuNote.stream()
+                .map(s -> {
+                    if (s.getNota() < 4) s.setNota(4.0); // [cite: 76]
+                    return s;
+                })
+                .collect(Collectors.toList());
+        System.out.println("c)Nota modificate:");
+        //9.3.3-d)
+        double sumaNote = studentiCuNote.stream()
+                .mapToDouble(Student::getNota)
+                .sum();
+        System.out.println("d)Suma notelor: " + sumaNote);
+        //9.3.3-e)
+        double media = sumaNote / studentiCuNote.size();
+        System.out.println("e)Media: " + media);
     }
 
 }
